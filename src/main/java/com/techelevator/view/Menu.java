@@ -33,9 +33,10 @@ public class Menu {
 		String userInput = in.nextLine();
 		try {
 			int selectedOption = Integer.valueOf(userInput);
-			if (selectedOption > 0 && selectedOption <= options.length) {
+			if ((selectedOption > 0 && selectedOption <= options.length)) {
 				choice = options[selectedOption - 1];
 			}
+
 		} catch (NumberFormatException e) {
 			// eat the exception, an error message will be displayed below since choice will be null
 		}
@@ -47,7 +48,7 @@ public class Menu {
 
 	private void displayMenuOptions(Object[] options) {
 		out.println();
-		for (int i = 0; i < options.length; i++) {
+		for (int i = 0; i < options.length-1; i++) {
 			int optionNum = i + 1;
 			out.println(optionNum + ") " + options[i]);
 		}
