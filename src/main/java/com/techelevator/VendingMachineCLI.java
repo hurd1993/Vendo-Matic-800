@@ -3,6 +3,8 @@ package com.techelevator;
 import com.techelevator.products.VendingMachineSlot;
 import com.techelevator.view.Menu;
 
+import java.io.File;
+
 public class VendingMachineCLI {
 
 	private static final String MAIN_MENU_OPTION_DISPLAY_ITEMS = "Display Vending Machine Items";
@@ -14,6 +16,7 @@ public class VendingMachineCLI {
 	private static final String[] MAIN_MENU_OPTIONS = {MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT};
 	private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT, PURCHASE_MENU_OPTION_FINISH_TRANSACTION};
 	private static final Inventory inventory = new Inventory();
+	private static SalesReport salesReport;
 
 	private Menu menu;
 
@@ -24,6 +27,7 @@ public class VendingMachineCLI {
 
 	public void run() {
 		inventory.stockInventory("vendingmachine.csv");
+		salesReport = new SalesReport(new File("salesReport.txt"),inventory);
 		while (true) {
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 

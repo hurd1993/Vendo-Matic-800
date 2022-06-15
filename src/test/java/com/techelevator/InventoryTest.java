@@ -10,7 +10,7 @@ public class InventoryTest {
     @Before
     public void setUp() {
         inv = new Inventory();
-        inv.stockInventory("test.txt");
+        inv.stockInventory("inventoryTest.txt");
     }
 
     @Test
