@@ -41,4 +41,65 @@ public class SalesReportTest {
 
     }
 
+    @Test
+    public void getSalesReportShouldReturnStartingWithHighestQuantitySold() {
+
+        String expected= "{Cloud Popcorn=50, Potato Crisps=10, Stackers=3, Grain Waves=0}";
+        Assert.assertEquals(expected,salesReport.getSalesReport().toString());
+
+    }
+
+    @Test
+    public void updateSalesReportWithOneItem() {
+
+        Map<String,Integer> expected = new HashMap<>();
+        expected.put("Potato Crisps",10);
+        expected.put("Stackers",3);
+        expected.put("Grain Waves",0);
+        expected.put("Cloud Popcorn",51);
+        salesReport.updateSalesReport("Cloud Popcorn");
+        Assert.assertThat(salesReport.getSalesReport(),is(expected));
+
+    }
+
+    @Test
+    public void updateSalesReportWithTwoItems() {
+
+        Map<String,Integer> expected = new HashMap<>();
+        expected.put("Potato Crisps",11);
+        expected.put("Stackers",3);
+        expected.put("Grain Waves",0);
+        expected.put("Cloud Popcorn",51);
+        salesReport.updateSalesReport("Cloud Popcorn");
+        salesReport.updateSalesReport("Potato Crisps");
+        Assert.assertThat(salesReport.getSalesReport(),is(expected));
+
+    }
+
+    @Test
+    public void updateSalesReportWithNullShouldMatchOriginal() {
+
+        Map<String,Integer> expected = new HashMap<>();
+        expected.put("Potato Crisps",10);
+        expected.put("Stackers",3);
+        expected.put("Grain Waves",0);
+        expected.put("Cloud Popcorn",50);
+        salesReport.updateSalesReport(null);
+        Assert.assertThat(salesReport.getSalesReport(),is(expected));
+
+    }
+
+    @Test
+    public void updateSalesReportWithNEmptyShouldMatchOriginal() {
+
+        Map<String,Integer> expected = new HashMap<>();
+        expected.put("Potato Crisps",10);
+        expected.put("Stackers",3);
+        expected.put("Grain Waves",0);
+        expected.put("Cloud Popcorn",50);
+        salesReport.updateSalesReport("");
+        Assert.assertThat(salesReport.getSalesReport(),is(expected));
+
+    }
+
 }

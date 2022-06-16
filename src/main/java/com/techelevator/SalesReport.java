@@ -5,14 +5,12 @@ import com.techelevator.products.VendingMachineSlot;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class SalesReport {
     private Map<String, Integer> salesReport = new HashMap<>();
     private Inventory inventory;
+    private final File outputFile = new File("SalesLogs/");
 
     public SalesReport(File inputFile, Inventory inventory) {
         this.inventory = inventory;
@@ -30,14 +28,31 @@ public class SalesReport {
     }
 
     public Map<String, Integer> getSalesReport() {
+        sortSalesReport();
         return salesReport;
     }
 
-    public void updateSalesReport(VendingMachineItem item) {
-
+    public void updateSalesReport(String itemName) {
+        if(salesReport.containsKey(itemName)) {
+            salesReport.put(itemName,salesReport.get(itemName)+1);
+        }
     }
 
     private void sortSalesReport() {
+        List<Map.Entry<String,Integer>> list = new LinkedList<>(salesReport.entrySet());
+
+        //Sorts the list
+        Collections.sort(list, Comparator.comparing(Map.Entry::getValue));
+
+        //Reverse The Order so most sold Item is at top
+        Collections.reverse(list);
+
+        //Assign list elements to a temporary Hashmap
+        HashMap<String,Integer> temp = new LinkedHashMap<>();
+        for (Map.Entry<String,Integer> entry : list) {
+            temp.put(entry.getKey(),entry.getValue());
+        }
+        salesReport = temp;
 
     }
 
