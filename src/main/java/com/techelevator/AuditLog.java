@@ -18,6 +18,7 @@ public class AuditLog {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         LocalDateTime now = LocalDateTime.now();
         String date = formatter.format(now);
+
         try(PrintWriter writer = new PrintWriter(new FileOutputStream(auditFile,true))) {
             writer.println(date  + " " + message);
         } catch (FileNotFoundException e) {

@@ -102,4 +102,12 @@ public class SalesReportTest {
 
     }
 
+    @Test
+    public void writeReportToFileShouldGenerateFile() {
+        String folderName = "TestSales";
+        salesReport.writeReportToFile(folderName);
+        File expectedFolder = new File("TestSales");
+        Assert.assertTrue(expectedFolder.exists());
+    }
+
 }
