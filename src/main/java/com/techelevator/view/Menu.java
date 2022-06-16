@@ -27,6 +27,14 @@ public class Menu {
 		}
 		return choice;
 	}
+	public Object getChoiceFromOptions(Object[] options, String message) {
+		Object choice = null;
+		while (choice == null) {
+			displayMenuOptions(options, message);
+			choice = getChoiceFromUserInput(options);
+		}
+		return choice;
+	}
 
 	private Object getChoiceFromUserInput(Object[] options) {
 		Object choice = null;
@@ -52,6 +60,16 @@ public class Menu {
 			int optionNum = i + 1;
 			out.println(optionNum + ") " + options[i]);
 		}
+		out.print(System.lineSeparator() + "Please choose an option >>> ");
+		out.flush();
+	}
+	private void displayMenuOptions(Object[] options, String message) {
+		out.println();
+		for (int i = 0; i < options.length; i++) {
+			int optionNum = i + 1;
+			out.println(optionNum + ") " + options[i]);
+		}
+		out.println("\n" + message);
 		out.print(System.lineSeparator() + "Please choose an option >>> ");
 		out.flush();
 	}

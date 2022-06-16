@@ -1,0 +1,5 @@
+U-Chews|3
+Heavy|1
+Potato Crisps|1
+
+Total Sales: $7.10
