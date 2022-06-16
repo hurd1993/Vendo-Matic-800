@@ -19,6 +19,7 @@ public class VendingMachineCLI {
     private static final Inventory inventory = new Inventory();
     private static SalesReport salesReport;
 
+
     private Menu menu;
 
 
@@ -28,7 +29,7 @@ public class VendingMachineCLI {
 
     public void run() {
         inventory.stockInventory("vendingmachine.csv");
-        salesReport = new SalesReport(new File("salesReport.txt"), inventory);
+        salesReport = new SalesReport(inventory, "SalesLog");
         while (true) {
             String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
@@ -81,6 +82,7 @@ public class VendingMachineCLI {
                                                     + " " + ogFunds + " " + currentFunds);
 
                                             vendingSlot.reduceQuantity();
+                                            salesReport.updateSalesReport(vendingSlot.getAssignedItem().getName());
                                             System.out.printf("Item: %s| Cost: %s| Money Remaining: %s|\n",
                                                     vendingSlot.getAssignedItem().getName(), vendingSlot.getAssignedItem().getPriceAsString(), currentFunds);
                                             System.out.println(vendingSlot.getAssignedItem().toString());
@@ -106,7 +108,7 @@ public class VendingMachineCLI {
                     }
                 }
             } else if (choice.equals(MAIN_MENU_OPTION_SALES_REPORT)) {
-                System.out.println("Selected Sales Report");
+                salesReport.writeReportToFile();
             } else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
                 return;
             }

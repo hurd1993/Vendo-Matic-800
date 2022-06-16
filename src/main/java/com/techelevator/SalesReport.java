@@ -7,20 +7,30 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class SalesReport {
     private Map<String, Integer> salesReport = new HashMap<>();
     private Inventory inventory;
+    private String salesFolder;
 
-    public SalesReport(File inputFile, Inventory inventory) {
+
+    public SalesReport(Inventory inventory, String salesFolder) {
         this.inventory = inventory;
-        if (inputFile.exists()) {
-            try (Scanner scanner = new Scanner(inputFile)) {
+        this.salesFolder = salesFolder;
+        File mostRecentFile = new File("");
+        File folder = new File(this.salesFolder);
+        if(folder.listFiles().length > 0) {
+            mostRecentFile = folder.listFiles()[folder.listFiles().length - 1];
+        }
+        if (mostRecentFile.exists()) {
+            try (Scanner scanner = new Scanner(mostRecentFile)) {
                 while (scanner.hasNextLine()) {
+                    if(scanner.nextLine().contains("Total Sales")) {
+                        break;
+                    }
                     String[] currentLine = scanner.nextLine().split("\\|");
                     salesReport.put(currentLine[0], Integer.parseInt(currentLine[1]));
                 }
@@ -34,6 +44,10 @@ public class SalesReport {
     public Map<String, Integer> getSalesReport() {
         sortSalesReport();
         return salesReport;
+    }
+
+    public void setSalesReport(Map<String,Integer> salesReport) {
+        this.salesReport = salesReport;
     }
 
     public void updateSalesReport(String itemName) {
@@ -60,9 +74,9 @@ public class SalesReport {
 
     }
 
-    public void writeReportToFile(String folderName) {
+    public void writeReportToFile() {
 
-        File directory = new File(folderName);
+        File directory = new File(salesFolder);
         if (!directory.exists()) {
             directory.mkdir();
         }
@@ -71,15 +85,17 @@ public class SalesReport {
         File file = new File(directory + "/" + dateFormat.format(date) + ".txt");
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
             for (Map.Entry<String, Integer> entry : getSalesReport().entrySet()) {
-                writer.println(entry.getKey() + " | " + entry.getValue());
+                writer.println(entry.getKey() + "|" + entry.getValue());
+
             }
+            writer.println("\nTotal Sales: " + getTotalSales());
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
 
     }
 
-    public double getTotalSales() {
+    public String getTotalSales() {
 
         double total = 0;
         for (Map.Entry<String, Integer> entry : salesReport.entrySet()) {
@@ -91,7 +107,7 @@ public class SalesReport {
             }
 
         }
-        return total;
+        return NumberFormat.getNumberInstance().format(total);
     }
 
 }

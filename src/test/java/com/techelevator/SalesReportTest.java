@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +19,13 @@ public class SalesReportTest {
     @Before
     public void setUp() {
         inventory.stockInventory("vendingmachine.csv");
-        salesReport = new SalesReport(new File("SalesReportTest.txt"),inventory);
+        salesReport = new SalesReport(inventory,"TestSales");
+        Map<String,Integer> testMap = new HashMap<>();
+        testMap.put("Potato Crisps",10);
+        testMap.put("Stackers",3);
+        testMap.put("Grain Waves",0);
+        testMap.put("Cloud Popcorn",50);
+        salesReport.setSalesReport(testMap);
     }
 
     @Test
@@ -29,6 +36,7 @@ public class SalesReportTest {
         expected.put("Stackers",3);
         expected.put("Grain Waves",0);
         expected.put("Cloud Popcorn",50);
+
         Assert.assertThat(salesReport.getSalesReport(),is(expected));
 
     }
@@ -36,8 +44,8 @@ public class SalesReportTest {
     @Test
     public void getTotalSalesTest() {
 
-        double expectedSales = 217.35;
-        Assert.assertEquals(expectedSales,salesReport.getTotalSales(),0);
+        String expectedSales = "$217.35";
+        Assert.assertEquals(expectedSales,(salesReport.getSalesReport()));
 
     }
 
@@ -104,8 +112,7 @@ public class SalesReportTest {
 
     @Test
     public void writeReportToFileShouldGenerateFile() {
-        String folderName = "TestSales";
-        salesReport.writeReportToFile(folderName);
+        salesReport.writeReportToFile();
         File expectedFolder = new File("TestSales");
         Assert.assertTrue(expectedFolder.exists());
     }
