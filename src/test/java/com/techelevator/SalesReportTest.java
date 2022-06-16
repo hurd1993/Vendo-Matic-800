@@ -20,12 +20,16 @@ public class SalesReportTest {
     public void setUp() {
         inventory.stockInventory("vendingmachine.csv");
         salesReport = new SalesReport(inventory,"TestSales");
-        Map<String,Integer> testMap = new HashMap<>();
-        testMap.put("Potato Crisps",10);
-        testMap.put("Stackers",3);
-        testMap.put("Grain Waves",0);
-        testMap.put("Cloud Popcorn",50);
-        salesReport.setSalesReport(testMap);
+        File folder = new File("TestSales");
+        if(folder.listFiles().length <= 0) {
+            Map<String,Integer> testMap = new HashMap<>();
+            testMap.put("Potato Crisps",10);
+            testMap.put("Stackers",3);
+            testMap.put("Grain Waves",0);
+            testMap.put("Cloud Popcorn",50);
+            salesReport.setSalesReport(testMap);
+        }
+
     }
 
     @Test
@@ -45,7 +49,7 @@ public class SalesReportTest {
     public void getTotalSalesTest() {
 
         String expectedSales = "$217.35";
-        Assert.assertEquals(expectedSales,(salesReport.getSalesReport()));
+        Assert.assertEquals(expectedSales,salesReport.getTotalSales());
 
     }
 
@@ -80,6 +84,19 @@ public class SalesReportTest {
         expected.put("Cloud Popcorn",51);
         salesReport.updateSalesReport("Cloud Popcorn");
         salesReport.updateSalesReport("Potato Crisps");
+        Assert.assertThat(salesReport.getSalesReport(),is(expected));
+
+    }
+    @Test
+    public void updateSalesReportWithNewItem() {
+
+        Map<String,Integer> expected = new HashMap<>();
+        expected.put("Potato Crisps",10);
+        expected.put("Stackers",3);
+        expected.put("Grain Waves",0);
+        expected.put("Cloud Popcorn",50);
+        expected.put("Cowtales",1);
+        salesReport.updateSalesReport("Cowtales");
         Assert.assertThat(salesReport.getSalesReport(),is(expected));
 
     }

@@ -110,6 +110,7 @@ public class VendingMachineCLI {
             } else if (choice.equals(MAIN_MENU_OPTION_SALES_REPORT)) {
                 salesReport.writeReportToFile();
             } else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
+                salesReport.writeReportToFile();
                 return;
             }
         }

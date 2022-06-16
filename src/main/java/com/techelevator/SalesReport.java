@@ -15,30 +15,40 @@ public class SalesReport {
     private Map<String, Integer> salesReport = new HashMap<>();
     private Inventory inventory;
     private String salesFolder;
+    private NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
 
 
     public SalesReport(Inventory inventory, String salesFolder) {
         this.inventory = inventory;
         this.salesFolder = salesFolder;
+        populateSalesReportWithMostRecentLog();
+
+
+    }
+
+    private void populateSalesReportWithMostRecentLog() {
         File mostRecentFile = new File("");
         File folder = new File(this.salesFolder);
+        if(!folder.exists()) {
+            folder.mkdir();
+        }
         if(folder.listFiles().length > 0) {
             mostRecentFile = folder.listFiles()[folder.listFiles().length - 1];
         }
         if (mostRecentFile.exists()) {
             try (Scanner scanner = new Scanner(mostRecentFile)) {
                 while (scanner.hasNextLine()) {
-                    if(scanner.nextLine().contains("Total Sales")) {
+                    String currentLine = scanner.nextLine();
+                    if(currentLine.isEmpty()) {
                         break;
                     }
-                    String[] currentLine = scanner.nextLine().split("\\|");
-                    salesReport.put(currentLine[0], Integer.parseInt(currentLine[1]));
+                    String[] currentItemToAdd = currentLine.split("\\|");
+                    salesReport.put(currentItemToAdd[0], Integer.parseInt(currentItemToAdd[1]));
                 }
             } catch (FileNotFoundException e) {
                 System.out.println(e.getMessage());
             }
         }
-
     }
 
     public Map<String, Integer> getSalesReport() {
@@ -53,6 +63,9 @@ public class SalesReport {
     public void updateSalesReport(String itemName) {
         if (salesReport.containsKey(itemName)) {
             salesReport.put(itemName, salesReport.get(itemName) + 1);
+        }
+        else {
+            salesReport.put(itemName,1);
         }
     }
 
@@ -107,7 +120,7 @@ public class SalesReport {
             }
 
         }
-        return NumberFormat.getNumberInstance().format(total);
+        return numberFormat.format(total);
     }
 
 }

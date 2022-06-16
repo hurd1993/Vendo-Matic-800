@@ -3,4 +3,4 @@ Potato Crisps|10
 Stackers|3
 Grain Waves|0
 
-Total Sales: 217.35
+Total Sales: $217.35
