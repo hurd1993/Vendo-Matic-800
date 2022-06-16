@@ -27,6 +27,7 @@ public class Menu {
 		}
 		return choice;
 	}
+
 	public Object getChoiceFromOptions(Object[] options, String message) {
 		Object choice = null;
 		while (choice == null) {
@@ -58,6 +59,9 @@ public class Menu {
 		out.println();
 		for (int i = 0; i < options.length; i++) {
 			int optionNum = i + 1;
+			if(optionNum >= 4) {
+				break;
+			}
 			out.println(optionNum + ") " + options[i]);
 		}
 		out.print(System.lineSeparator() + "Please choose an option >>> ");

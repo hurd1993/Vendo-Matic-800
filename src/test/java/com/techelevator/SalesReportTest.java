@@ -62,7 +62,7 @@ public class SalesReportTest {
     }
 
     @Test
-    public void updateSalesReportWithOneItem() {
+    public void updateSalesReportWithOneItem() throws UserInputException {
 
         Map<String,Integer> expected = new HashMap<>();
         expected.put("Potato Crisps",10);
@@ -75,7 +75,7 @@ public class SalesReportTest {
     }
 
     @Test
-    public void updateSalesReportWithTwoItems() {
+    public void updateSalesReportWithTwoItems() throws UserInputException {
 
         Map<String,Integer> expected = new HashMap<>();
         expected.put("Potato Crisps",11);
@@ -88,7 +88,7 @@ public class SalesReportTest {
 
     }
     @Test
-    public void updateSalesReportWithNewItem() {
+    public void updateSalesReportWithNewItem() throws UserInputException {
 
         Map<String,Integer> expected = new HashMap<>();
         expected.put("Potato Crisps",10);
@@ -101,29 +101,25 @@ public class SalesReportTest {
 
     }
 
-    @Test
-    public void updateSalesReportWithNullShouldMatchOriginal() {
+    @Test(expected = UserInputException.class)
+    public void updateSalesReportWithNullShouldThrowException() throws UserInputException {
 
-        Map<String,Integer> expected = new HashMap<>();
-        expected.put("Potato Crisps",10);
-        expected.put("Stackers",3);
-        expected.put("Grain Waves",0);
-        expected.put("Cloud Popcorn",50);
+
         salesReport.updateSalesReport(null);
-        Assert.assertThat(salesReport.getSalesReport(),is(expected));
+
+    }
+    @Test(expected = UserInputException.class)
+    public void updateSalesReportWithUnknownItemShouldThrowException() throws UserInputException {
+
+
+        salesReport.updateSalesReport("Mountain Lightning");
 
     }
 
-    @Test
-    public void updateSalesReportWithNEmptyShouldMatchOriginal() {
+    @Test(expected = UserInputException.class)
+    public void updateSalesReportWithEmptyShouldThrowException() throws UserInputException {
 
-        Map<String,Integer> expected = new HashMap<>();
-        expected.put("Potato Crisps",10);
-        expected.put("Stackers",3);
-        expected.put("Grain Waves",0);
-        expected.put("Cloud Popcorn",50);
         salesReport.updateSalesReport("");
-        Assert.assertThat(salesReport.getSalesReport(),is(expected));
 
     }
 

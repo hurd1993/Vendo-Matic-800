@@ -62,13 +62,26 @@ public class SalesReport {
         this.salesReport = salesReport;
     }
 
-    public void updateSalesReport(String itemName) {
+    public void updateSalesReport(String itemName) throws UserInputException {
+
+        if(itemName == null || itemName.equals("") || !isValidItemName(itemName)) {
+            throw new UserInputException("Invalid Item Name");
+        }
         if (salesReport.containsKey(itemName)) {
             salesReport.put(itemName, salesReport.get(itemName) + 1);
         }
         else {
             salesReport.put(itemName,1);
         }
+    }
+
+    private boolean isValidItemName(String itemName) {
+        for(VendingMachineSlot slot : inventory.getVendingSlots()) {
+            if(slot.getAssignedItem().getName().equalsIgnoreCase(itemName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void sortSalesReport() {

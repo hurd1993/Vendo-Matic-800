@@ -1,0 +1,7 @@
+Dr. Salt|5
+U-Chews|4
+Potato Crisps|2
+Chiclets|1
+Heavy|1
+
+Total Sales: $19.25

@@ -13,8 +13,10 @@ public class VendingMachineCLI {
     private static final String PURCHASE_MENU_OPTION_FEED_MONEY = "Feed Money";
     private static final String PURCHASE_MENU_OPTION_SELECT_PRODUCT = "Select Product";
     private static final String PURCHASE_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
-    private static final String[] MAIN_MENU_OPTIONS = {MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT, MAIN_MENU_OPTION_SALES_REPORT};
-    private static final String[] PURCHASE_MENU_OPTIONS = {PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT, PURCHASE_MENU_OPTION_FINISH_TRANSACTION};
+    private static final String[] MAIN_MENU_OPTIONS = {
+            MAIN_MENU_OPTION_DISPLAY_ITEMS, MAIN_MENU_OPTION_PURCHASE, MAIN_MENU_OPTION_EXIT, MAIN_MENU_OPTION_SALES_REPORT};
+    private static final String[] PURCHASE_MENU_OPTIONS =
+            {PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT, PURCHASE_MENU_OPTION_FINISH_TRANSACTION};
     private static final Inventory inventory = new Inventory();
 
 
@@ -68,35 +70,12 @@ public class VendingMachineCLI {
                         } else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
                             //Customer is displayed the products again and given the option to purchase
                             inventory.displayVendingMachineItems();
-                            System.out.println("Current Money Provided: " + currentFunds);
+                            System.out.println("\nCurrent Money Provided: " + currentFunds);
                             System.out.print("Enter Item Slot for Purchase>>> ");
                             String slotChoice = menu.getIn().nextLine();
                             if (inventory.isValidSlot(slotChoice)) {
-                                for (VendingMachineSlot vendingSlot : inventory.getVendingSlots()) {
-                                    if (vendingSlot.getSlotIdentifier().equalsIgnoreCase(slotChoice)) {
-                                        if (vendingSlot.getCurrentQuantity() > 0) {
-                                            try {
-                                                String ogFunds = currentFunds.toString();
-                                                currentFunds.removeFunds(vendingSlot.getAssignedItem().getPrice());
-                                                AuditLog.log(vendingSlot.getAssignedItem().getName() + " " + vendingSlot.getSlotIdentifier()
-                                                        + " " + ogFunds + " " + currentFunds);
-
-                                                vendingSlot.reduceQuantity();
-                                                salesReport.updateSalesReport(vendingSlot.getAssignedItem().getName());
-                                                System.out.printf("Item: %s| Cost: %s| Money Remaining: %s|\n",
-                                                        vendingSlot.getAssignedItem().getName(), vendingSlot.getAssignedItem().getPriceAsString(), currentFunds);
-                                                System.out.println(vendingSlot.getAssignedItem().toString());
-                                            } catch (UserInputException e) {
-                                                System.out.println(e.getMessage());
-                                            }
-
-
-                                        } else {
-                                            System.out.println("***" + vendingSlot.getAssignedItem().getName() + " is Sold Out***");
-                                        }
-                                    }
-
-                                }
+                                //Private Helper Method to store the logic for handling purchases
+                                purchaseItemInSlot(salesReport, currentFunds, slotChoice);
                             } else {
                                 System.out.println("***Invalid Slot Choice***");
                             }
@@ -118,6 +97,34 @@ public class VendingMachineCLI {
                     salesReport.writeReportToFile();
                     return;
             }
+        }
+    }
+
+    private void purchaseItemInSlot(SalesReport salesReport, Funds currentFunds, String slotChoice) {
+        for (VendingMachineSlot vendingSlot : inventory.getVendingSlots()) {
+            if (vendingSlot.getSlotIdentifier().equalsIgnoreCase(slotChoice)) {
+                if (vendingSlot.getCurrentQuantity() > 0) {
+                    try {
+                        String ogFunds = currentFunds.toString();
+                        currentFunds.removeFunds(vendingSlot.getAssignedItem().getPrice());
+                        AuditLog.log(vendingSlot.getAssignedItem().getName() + " " + vendingSlot.getSlotIdentifier()
+                                + " " + ogFunds + " " + currentFunds);
+
+                        vendingSlot.reduceQuantity();
+                        salesReport.updateSalesReport(vendingSlot.getAssignedItem().getName());
+                        System.out.printf("Item: %s| Cost: %s| Money Remaining: %s|\n",
+                                vendingSlot.getAssignedItem().getName(), vendingSlot.getAssignedItem().getPriceAsString(), currentFunds);
+                        System.out.println(vendingSlot.getAssignedItem().toString());
+                    } catch (UserInputException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+
+                } else {
+                    System.out.println("***" + vendingSlot.getAssignedItem().getName() + " is Sold Out***");
+                }
+            }
+
         }
     }
 
