@@ -1,8 +1,8 @@
 package com.techelevator.products;
 
 public class VendingMachineSlot {
-    private String slotIdentifier;
-    private VendingMachineItem assignedItem;
+    private final String slotIdentifier;
+    private final VendingMachineItem assignedItem;
     private int currentQuantity = 5;
 
     public VendingMachineSlot(String slotIdentifier, VendingMachineItem assignedItem) {

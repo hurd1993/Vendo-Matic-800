@@ -50,8 +50,8 @@ public class VendingMachineCLI {
                             //Customer feeds valid bills to machine ($1,$2,$5, or $10)
 
                             while (true) {
-                                System.out.println("Current Money Provided: " + currentFunds);
-                                System.out.print("Please Feed appropriate Bill(Press 'E' to Exit): " + "\n");
+                                System.out.println("\nCurrent Money Provided: " + currentFunds);
+                                System.out.print("Please Feed appropriate Bill(Press 'E' to Exit)>>> ");
                                 String bill = menu.getIn().nextLine();
                                 try {
                                     if (bill.equalsIgnoreCase("E")) {
@@ -69,7 +69,7 @@ public class VendingMachineCLI {
                             //Customer is displayed the products again and given the option to purchase
                             inventory.displayVendingMachineItems();
                             System.out.println("Current Money Provided: " + currentFunds);
-                            System.out.println("Enter Item Slot for Purchase: ");
+                            System.out.print("Enter Item Slot for Purchase>>> ");
                             String slotChoice = menu.getIn().nextLine();
                             if (inventory.isValidSlot(slotChoice)) {
                                 for (VendingMachineSlot vendingSlot : inventory.getVendingSlots()) {

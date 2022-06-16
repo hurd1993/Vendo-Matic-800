@@ -13,9 +13,8 @@ import java.util.*;
 
 public class SalesReport {
     private Map<String, Integer> salesReport = new HashMap<>();
-    private Inventory inventory;
-    private String salesFolder;
-    private NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
+    private final Inventory inventory;
+    private final String salesFolder;
 
 
     public SalesReport(Inventory inventory, String salesFolder) {
@@ -76,7 +75,7 @@ public class SalesReport {
         List<Map.Entry<String, Integer>> list = new LinkedList<>(salesReport.entrySet());
 
         //Sorts the list
-        Collections.sort(list, Comparator.comparing(Map.Entry::getValue));
+        list.sort(Map.Entry.comparingByValue());
 
         //Reverse The Order so most sold Item is at top
         Collections.reverse(list);
@@ -99,6 +98,7 @@ public class SalesReport {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy HH-mm-ss");
         File file = new File(directory + "/" + dateFormat.format(date) + ".txt");
+
         try (PrintWriter writer = new PrintWriter(new FileOutputStream(file, true))) {
             for (Map.Entry<String, Integer> entry : getSalesReport().entrySet()) {
                 writer.println(entry.getKey() + "|" + entry.getValue());
@@ -114,6 +114,7 @@ public class SalesReport {
 
     public String getTotalSales() {
 
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
         double total = 0;
         for (Map.Entry<String, Integer> entry : salesReport.entrySet()) {
             for (VendingMachineSlot vendingMachineSlot : inventory.getVendingSlots()) {

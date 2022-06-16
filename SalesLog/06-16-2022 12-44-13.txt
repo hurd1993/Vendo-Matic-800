@@ -1,0 +1,6 @@
+U-Chews|4
+Potato Crisps|2
+Heavy|1
+Chiclets|1
+
+Total Sales: $11.75

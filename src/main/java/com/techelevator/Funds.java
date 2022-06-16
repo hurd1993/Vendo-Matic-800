@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Funds {
     private double currentFunds = 0;
-    private NumberFormat format = NumberFormat.getCurrencyInstance();
-    private List<Integer> validValues = new ArrayList<>();
+    private final NumberFormat format = NumberFormat.getCurrencyInstance();
+    private final List<Integer> validValues = new ArrayList<>();
 
     public double getCurrentFunds() {
         return currentFunds;
@@ -53,7 +53,9 @@ public class Funds {
         }
 
         AuditLog.log("GIVE CHANGE: " +
-                format.format(ogFunds) + " " + format.format(currentFunds));
+                format.format(ogFunds) +
+                " " +
+                format.format(currentFunds));
         return String.format("Your change is %d Quarter(s), %d Dime(s), and %d Nickel(s)", numOfQuarters, numOfDimes, numOfNickels);
     }
 

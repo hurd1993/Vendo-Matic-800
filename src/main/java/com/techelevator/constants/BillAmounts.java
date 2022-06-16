@@ -6,7 +6,7 @@ public enum BillAmounts {
     FIVE(5),
     TEN(10);
 
-    private int value;
+    private final int value;
 
     BillAmounts(int value) {
         this.value = value;
@@ -15,4 +15,7 @@ public enum BillAmounts {
     public int getValue() {
         return this.value;
     }
+
+
+
 }

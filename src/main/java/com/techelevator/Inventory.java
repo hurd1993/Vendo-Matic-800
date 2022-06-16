@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Inventory {
-    private List<VendingMachineSlot> vendingSlots = new ArrayList<>();
+    private final List<VendingMachineSlot> vendingSlots = new ArrayList<>();
 
     public void stockInventory(String inventoryFile) {
         final String CHIP = "Chip";
