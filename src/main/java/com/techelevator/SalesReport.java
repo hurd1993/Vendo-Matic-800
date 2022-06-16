@@ -48,6 +48,9 @@ public class SalesReport {
             } catch (FileNotFoundException e) {
                 System.out.println(e.getMessage());
             }
+            catch (NumberFormatException e) {
+                System.out.println("Improper Value in most recent .txt file.");
+            }
         }
     }
 
@@ -102,6 +105,7 @@ public class SalesReport {
 
             }
             writer.println("\nTotal Sales: " + getTotalSales());
+            file.setReadOnly();
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
