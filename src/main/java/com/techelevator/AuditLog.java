@@ -8,9 +8,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class AuditLog {
-    public static void log(String message) {
-        File auditFile = new File("Log.txt");
+    private static final File auditFile = new File("Log.txt");
 
+
+
+    public static void log(String message) {
+        //ToDO: Have it so I don't need to make a new printwriter each time
         String pattern = "MM/dd/yyyy hh:mm:ss a";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         LocalDateTime now = LocalDateTime.now();
@@ -20,5 +23,15 @@ public class AuditLog {
         } catch (FileNotFoundException e) {
             System.out.println("***" + e.getMessage() + "***");
         }
+//        if(writer == null) {
+//            try {
+//                writer = new PrintWriter(new FileOutputStream(auditFile,true));
+//            }
+//            catch (FileNotFoundException e) {
+//                System.out.println("***" + e.getMessage() + "***");
+//            }
+//        }
+//        writer.println(date  + " " + message);
+//        writer.close();
     }
 }
