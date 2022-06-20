@@ -1,0 +1,9 @@
+Potato Crisps|5
+Dr. Salt|5
+U-Chews|4
+Stackers|2
+Chiclets|2
+Heavy|1
+Grain Waves|1
+
+Total Sales: $34.80

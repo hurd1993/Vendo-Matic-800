@@ -18,7 +18,8 @@ public class VendingMachineCLI {
     private static final String[] PURCHASE_MENU_OPTIONS =
             {PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT, PURCHASE_MENU_OPTION_FINISH_TRANSACTION};
     private static final Inventory inventory = new Inventory();
-
+    private Funds currentFunds = new Funds();
+    private SalesReport salesReport = new SalesReport(inventory, "SalesLog");
 
     private final Menu menu;
 
@@ -29,7 +30,7 @@ public class VendingMachineCLI {
 
     public void run() {
         inventory.stockInventory("vendingmachine.csv");
-        SalesReport salesReport = new SalesReport(inventory, "SalesLog");
+
         while (true) {
             String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
@@ -41,10 +42,10 @@ public class VendingMachineCLI {
                     break;
                 case MAIN_MENU_OPTION_PURCHASE:
                     // do purchase
-                    Funds currentFunds = new Funds();
+                    //Funds currentFunds = new Funds();
                     while (true) {
 
-                        //System.out.println("Current Money Provided: " + currentFunds);
+
                         String message = "Current Money Provided: " + currentFunds;
                         String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS, message);
 
@@ -75,7 +76,7 @@ public class VendingMachineCLI {
                             String slotChoice = menu.getIn().nextLine();
                             if (inventory.isValidSlot(slotChoice)) {
                                 //Private Helper Method to store the logic for handling purchases
-                                purchaseItemInSlot(salesReport, currentFunds, slotChoice);
+                                purchaseItemInSlot(slotChoice);
                             } else {
                                 System.out.println("***Invalid Slot Choice***");
                             }
@@ -100,7 +101,7 @@ public class VendingMachineCLI {
         }
     }
 
-    private void purchaseItemInSlot(SalesReport salesReport, Funds currentFunds, String slotChoice) {
+    private void purchaseItemInSlot(String slotChoice) {
         for (VendingMachineSlot vendingSlot : inventory.getVendingSlots()) {
             if (vendingSlot.getSlotIdentifier().equalsIgnoreCase(slotChoice)) {
                 if (vendingSlot.getCurrentQuantity() > 0) {
