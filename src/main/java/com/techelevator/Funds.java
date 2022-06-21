@@ -4,13 +4,10 @@ import com.techelevator.constants.BillAmounts;
 import com.techelevator.constants.CoinAmounts;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Funds {
     private double currentFunds = 0;
     private final NumberFormat format = NumberFormat.getCurrencyInstance();
-    private final List<Integer> validValues = new ArrayList<>();
 
     public double getCurrentFunds() {
         return currentFunds;
@@ -60,12 +57,14 @@ public class Funds {
     }
 
     public void feedFunds(String fundsToFeed) throws UserInputException {
+        boolean validFunds = false;
         for (BillAmounts bill : BillAmounts.values()) {
-            validValues.add(bill.getValue());
+            if (bill.getValue() == Integer.parseInt(fundsToFeed)) {
+                validFunds = true;
+            }
         }
-        if (!validValues.contains(Integer.parseInt(fundsToFeed))) {
+        if (!validFunds) {
             throw new UserInputException("Invalid Bill Type: Please Enter 1, 2, 5, or 10");
-
         } else {
             for (BillAmounts value : BillAmounts.values()) {
                 if (Integer.parseInt(fundsToFeed) == value.getValue()) {

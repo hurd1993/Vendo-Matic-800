@@ -42,7 +42,6 @@ public class VendingMachineCLI {
                     break;
                 case MAIN_MENU_OPTION_PURCHASE:
                     // do purchase
-                    //Funds currentFunds = new Funds();
                     while (true) {
 
 
